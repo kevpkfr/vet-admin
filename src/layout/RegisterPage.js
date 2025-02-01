@@ -40,7 +40,7 @@ function RegisterPage() {
         {/* Columna izquierda */}
         <div className="flex flex-col items-center justify-center bg-black text-white p-6 w-1/3 rounded-l-lg">
           <img
-            src="/path-to-your-logo.png"
+            src="/assets/images/logo.png"
             alt="PetPocket Logo"
             className="h-16 w-16 mb-4"
           />

@@ -27,18 +27,33 @@ function RegistroPacientesPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold mb-4">Registro de Pacientes</h2>
+    <div className="p-6 space-y-6">
+      {/* Encabezado con Icono */}
+      <div className="flex items-center gap-2">
+        <span className="text-3xl">🐾</span>
+        <h2 className="text-3xl font-bold text-gray-800">
+          Registro de Pacientes
+        </h2>
+      </div>
 
-      {/* Lista de pacientes */}
-      <ListaPacientes
-        pacientes={pacientes}
-        onEditar={editarPaciente}
-        onEliminar={eliminarPaciente}
-      />
+      {/* Diseño Responsivo: Dos Columnas en Pantallas Grandes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Lista de Pacientes */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-xl font-bold mb-4">Pacientes Registrados</h3>
+          <ListaPacientes
+            pacientes={pacientes}
+            onEditar={editarPaciente}
+            onEliminar={eliminarPaciente}
+          />
+        </div>
 
-      {/* Formulario para agregar nuevos pacientes */}
-      <FormPaciente onAgregar={agregarPaciente} />
+        {/* Formulario de Nuevo Paciente */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-xl font-bold mb-4">Registrar Nuevo Paciente</h3>
+          <FormPaciente onAgregar={agregarPaciente} />
+        </div>
+      </div>
     </div>
   );
 }

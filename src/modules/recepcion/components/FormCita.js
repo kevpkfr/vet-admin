@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MEDICOS } from "../../../data/medicos";
 import { PACIENTES } from "../../../data/pacientes";
+import { FiCalendar } from "react-icons/fi";
 
 function FormCita({ onAgregar }) {
   const [form, setForm] = useState({
@@ -25,70 +26,95 @@ function FormCita({ onAgregar }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow space-y-4">
-      <h3 className="text-xl font-bold">Nueva Cita</h3>
-      <div>
-        <label className="block text-sm font-medium">Fecha</label>
-        <input
-          type="date"
-          name="fecha"
-          value={form.fecha}
-          onChange={handleChange}
-          className="w-full border border-gray-300 rounded px-2 py-1"
-          required
-        />
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 rounded-lg shadow-lg space-y-6 max-w-3xl mx-auto"
+    >
+      {/* Encabezado */}
+      <div className="flex items-center justify-center space-x-2">
+        <FiCalendar className="text-blue-600 text-3xl" />
+        <h3 className="text-2xl font-bold text-gray-700">Agendar Nueva Cita</h3>
       </div>
-      <div>
-        <label className="block text-sm font-medium">Hora</label>
-        <input
-          type="time"
-          name="hora"
-          value={form.hora}
-          onChange={handleChange}
-          className="w-full border border-gray-300 rounded px-2 py-1"
-          required
-        />
+
+      <hr className="border-gray-300" />
+
+      {/* Campos del formulario */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:space-x-4">
+          {/* Fecha */}
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-600">Fecha</label>
+            <input
+              type="date"
+              name="fecha"
+              value={form.fecha}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-blue-200 focus:outline-none"
+              required
+            />
+          </div>
+          {/* Hora */}
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-600">Hora</label>
+            <input
+              type="time"
+              name="hora"
+              value={form.hora}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-blue-200 focus:outline-none"
+              required
+            />
+          </div>
+        </div>
+
+        {/* Paciente */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600">Paciente</label>
+          <select
+            name="paciente"
+            value={form.paciente}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-blue-200 focus:outline-none"
+            required
+          >
+            <option value="">Selecciona un paciente</option>
+            {PACIENTES.map((paciente) => (
+              <option key={paciente.id} value={paciente.nombre}>
+                {paciente.nombre} - Propietario: {paciente.propietario}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Médico */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600">Médico</label>
+          <select
+            name="medico"
+            value={form.medico}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-blue-200 focus:outline-none"
+            required
+          >
+            <option value="">Selecciona un médico</option>
+            {MEDICOS.map((medico) => (
+              <option key={medico.id} value={medico.nombre}>
+                {medico.nombre} - {medico.especialidad}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium">Paciente</label>
-        <select
-          name="paciente"
-          value={form.paciente}
-          onChange={handleChange}
-          className="w-full border border-gray-300 rounded px-2 py-1"
-          required
+
+      {/* Botón Guardar */}
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold transition-all"
         >
-          <option value="">Selecciona un paciente</option>
-          {PACIENTES.map((paciente) => (
-            <option key={paciente.id} value={paciente.nombre}>
-              {paciente.nombre} - Propietario: {paciente.propietario}
-            </option>
-          ))}
-        </select>
+          Guardar Cita
+        </button>
       </div>
-      <div>
-        <label className="block text-sm font-medium">Médico</label>
-        <select
-          name="medico"
-          value={form.medico}
-          onChange={handleChange}
-          className="w-full border border-gray-300 rounded px-2 py-1"
-          required
-        >
-          <option value="">Selecciona un médico</option>
-          {MEDICOS.map((medico) => (
-            <option key={medico.id} value={medico.nombre}>
-              {medico.nombre} - {medico.especialidad}
-            </option>
-          ))}
-        </select>
-      </div>
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Guardar Cita
-      </button>
     </form>
   );
 }

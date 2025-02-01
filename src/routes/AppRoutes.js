@@ -14,20 +14,21 @@ import RRHHModule from "../modules/rrhh/RRHHModule";
 import ReportesModule from "../modules/reportes/ReportesModule";
 import ConfiguracionModule from "../modules/configuracion/ConfiguracionModule";
 import PerfilModule from "../modules/perfil/PerfilModule";
+
 import {
-  LineChart,
-  Line,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
   Legend,
+  LineChart,
+  Line,
 } from "recharts";
 
-// Datos de ejemplo para las gráficas
+// 📊 **Datos de Ejemplo para Estadísticas**
 const citasData = [
   { mes: "Enero", citas: 30 },
   { mes: "Febrero", citas: 45 },
@@ -44,6 +45,7 @@ const ingresosData = [
   { mes: "Mayo", ingresos: 6200 },
 ];
 
+// 📌 **Página de Bienvenida con Gráficos Responsivos**
 // Página de Bienvenida (Dashboard General)
 function WelcomePage() {
   return (
@@ -52,42 +54,47 @@ function WelcomePage() {
       <p className="text-gray-600">
         Aquí encontrarás un resumen de las estadísticas más relevantes.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Gráfica de Citas */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md w-full">
           <h3 className="text-lg font-bold mb-4">Citas por Mes</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={citasData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="mes" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="citas" fill="#4CAF50" />
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="w-full h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={citasData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="mes" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="citas" fill="#4CAF50" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Gráfica de Ingresos */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md w-full">
           <h3 className="text-lg font-bold mb-4">Ingresos por Mes</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={ingresosData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="mes" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="ingresos" stroke="#FF5733" />
-            </LineChart>
-          </ResponsiveContainer>
+          <div className="w-full h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={ingresosData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="mes" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="ingresos" stroke="#FF5733" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// Página de Error 404
+
+// 📌 **Página de Error 404**
 function NotFoundPage() {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 text-gray-800">
@@ -106,21 +113,22 @@ function NotFoundPage() {
   );
 }
 
-// Componente de ruta privada
+// 📌 **Componente de Ruta Privada**
 function PrivateRoute({ element }) {
-  const isAuthenticated = true; // Cambiar a lógica de autenticación real
+  const isAuthenticated = true; // Lógica de autenticación
   return isAuthenticated ? element : <LoginPage />;
 }
 
+// 📌 **Rutas de la Aplicación**
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Rutas públicas */}
+        {/* Rutas Públicas */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registro" element={<RegisterPage />} />
 
-        {/* Rutas privadas (protegidas) */}
+        {/* Rutas Privadas */}
         <Route
           path="/"
           element={

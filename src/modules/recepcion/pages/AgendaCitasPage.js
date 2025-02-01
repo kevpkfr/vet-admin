@@ -20,25 +20,32 @@ function AgendaCitasPage() {
   // Editar cita
   const editarCita = (citaEditada) => {
     setCitas(
-      citas.map((cita) =>
-        cita.id === citaEditada.id ? citaEditada : cita
-      )
+      citas.map((cita) => (cita.id === citaEditada.id ? citaEditada : cita))
     );
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold mb-4">Agenda de Citas</h2>
+    <div className="p-6 space-y-6">
+      {/* Encabezado con Icono */}
+      <div className="flex items-center gap-2">
+        <span className="text-3xl">📅</span>
+        <h2 className="text-3xl font-bold text-gray-800">Agenda de Citas</h2>
+      </div>
 
-      {/* Lista de citas */}
-      <ListaCitas
-        citas={citas}
-        onEliminar={eliminarCita}
-        onEditar={editarCita}
-      />
+      {/* Diseño Responsivo: Dos Columnas en Pantallas Grandes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Lista de Citas */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-xl font-bold mb-4">Citas Programadas</h3>
+          <ListaCitas citas={citas} onEliminar={eliminarCita} onEditar={editarCita} />
+        </div>
 
-      {/* Formulario para agregar nuevas citas */}
-      <FormCita onAgregar={agregarCita} />
+        {/* Formulario de Nueva Cita */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-xl font-bold mb-4">Agregar Nueva Cita</h3>
+          <FormCita onAgregar={agregarCita} />
+        </div>
+      </div>
     </div>
   );
 }

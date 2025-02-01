@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FiHome,
@@ -56,14 +56,23 @@ const modules = {
 function MainLayout({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const currentPath = location.pathname.split("/");
-  const currentModule = currentPath[1];
+  const currentModule = location.pathname.split("/")[1];
   const submodules = modules[currentModule] || [];
   const isDashboard = location.pathname === "/";
-  const isModuleRoot = currentPath.length === 2 && currentModule;
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+  // Manejar cambios en el tamaño de la ventana para contraer el sidebar automáticamente
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSidebarOpen(window.innerWidth > 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
@@ -77,15 +86,12 @@ function MainLayout({ children }) {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full bg-dark text-white transition-all duration-300 z-20 ${
-          isSidebarOpen ? "w-64" : "w-16"
+          isSidebarOpen ? "w-56" : "w-16"
         }`}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-600">
-          <button
-            onClick={toggleSidebar}
-            className="text-white text-xl focus:outline-none"
-          >
-            <FiMenu />
+          <button onClick={toggleSidebar} className="text-white text-xl focus:outline-none">
+            {isSidebarOpen ? <FiMenu /> : <FiMenu />}
           </button>
           {isSidebarOpen && <h1 className="text-lg font-bold">PET POCKET</h1>}
         </div>
@@ -107,11 +113,7 @@ function MainLayout({ children }) {
                       className="flex items-center gap-2 px-4 py-2 rounded hover:bg-orange-500 transition"
                     >
                       {submodule.icon}
-                      <span
-                        className={`${
-                          isSidebarOpen ? "block" : "hidden"
-                        } transition-all`}
-                      >
+                      <span className={`${isSidebarOpen ? "block" : "hidden"} transition-all`}>
                         {submodule.name}
                       </span>
                     </Link>
@@ -119,18 +121,9 @@ function MainLayout({ children }) {
                 ))}
               </ul>
               <hr className="my-4 border-gray-600" />
-              <Link
-                to="/"
-                className="flex items-center gap-2 px-4 py-2 rounded hover:bg-orange-500 transition"
-              >
+              <Link to="/" className="flex items-center gap-2 px-4 py-2 rounded hover:bg-orange-500 transition">
                 <FiHome />
-                <span
-                  className={`${
-                    isSidebarOpen ? "block" : "hidden"
-                  } transition-all`}
-                >
-                  Volver al Dashboard
-                </span>
+                <span className={`${isSidebarOpen ? "block" : "hidden"} transition-all`}>Volver al Dashboard</span>
               </Link>
             </>
           ) : (
@@ -150,11 +143,7 @@ function MainLayout({ children }) {
                       className="flex items-center gap-2 px-4 py-2 rounded hover:bg-orange-500 transition"
                     >
                       {modules[module][0]?.icon}
-                      <span
-                        className={`${
-                          isSidebarOpen ? "block" : "hidden"
-                        } transition-all`}
-                      >
+                      <span className={`${isSidebarOpen ? "block" : "hidden"} transition-all`}>
                         {module.charAt(0).toUpperCase() + module.slice(1)}
                       </span>
                     </Link>
@@ -164,23 +153,12 @@ function MainLayout({ children }) {
             </>
           )}
         </nav>
-
-        {isSidebarOpen && (
-          <div className="p-4">
-            <button
-              className="w-full py-2 bg-orange-500 hover:bg-orange-600 rounded font-bold text-white text-center"
-              onClick={cerrarSesion}
-            >
-              Cerrar Sesión
-            </button>
-          </div>
-        )}
       </aside>
 
       {/* Main Content */}
       <div
         className={`flex-1 flex flex-col ${
-          isSidebarOpen ? "ml-64" : "ml-16"
+          isSidebarOpen ? "ml-56" : "ml-16"
         } transition-all duration-300`}
       >
         {/* Topbar */}
@@ -196,22 +174,16 @@ function MainLayout({ children }) {
             </div>
           </div>
           <div className="flex items-center gap-4 relative">
-            <FiBell
-              className="text-white text-xl cursor-pointer"
-              onClick={() => alert("Notificaciones")}
-            />
+            <FiBell className="text-white text-xl cursor-pointer" onClick={() => alert("Notificaciones")} />
             <div
               className="flex items-center gap-2 cursor-pointer"
-              onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+              onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
             >
               <span className="text-sm font-medium">PET_POT14</span>
               <FiUser />
             </div>
             {isProfileMenuOpen && (
-              <div
-                className="absolute right-0 mt-10 bg-white text-dark shadow-lg rounded-lg p-4 z-30"
-                onMouseLeave={() => setIsProfileMenuOpen(false)} // Cerrarlo al salir del área
-              >
+              <div className="absolute right-0 mt-10 bg-white text-dark shadow-lg rounded-lg p-4 z-30">
                 <ul className="space-y-2">
                   <li>
                     <Link

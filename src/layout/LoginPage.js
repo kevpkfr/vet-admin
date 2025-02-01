@@ -35,7 +35,7 @@ function LoginPage() {
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
         <div className="text-center mb-6">
           <img
-            src="/path-to-your-logo.png"
+            src="/assets/images/logo.png"
             alt="PetPocket Logo"
             className="h-16 w-16 mx-auto"
           />
